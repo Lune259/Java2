@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>登录 / 注册 - SKULL MALL 骷髅头潮品商城</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div class="auth-wrap">
+  <div class="auth-left">
+    <a href="index.html" class="logo" style="margin-bottom:36px">
+      <div class="skull-mark" style="font-size:22px">💀</div>
+      <div class="logo-text"><b>SKULL <i>MALL</i></b><span>骷髅潮品</span></div>
+    </a>
+
+    <h1>向死而生<br><em>穿骨而行</em></h1>
+    <p>
+      10 大暗黑系列、60+ 骷髅单品，从印花 T 恤到 925 银骨饰，从桌面头骨到哥特家居。
+      我们不贩卖恐惧，我们只把死亡做成好看的形状。
+    </p>
+
+    <div class="auth-feats">
+      <div><i>⚰️</i> 暗黑仓直发 · 全国次日达</div>
+      <div><i>🦴</i> 品牌授权 · 假一赔十</div>
+      <div><i>☠</i> 7 天无理由 · 上门取件</div>
+      <div><i>🕯️</i> 守夜客服 · 7×24 在线</div>
+    </div>
+
+    <div style="margin-top:44px;font-size:12px;color:#6b6862;letter-spacing:5px;font-family:Oswald,sans-serif">
+      MEMENTO MORI
+    </div>
+  </div>
+
+  <div class="auth-right">
+    <div class="auth-box">
+      <div class="tabs-switch">
+        <button id="tabLogin" class="on">登录</button>
+        <button id="tabReg">注册</button>
+      </div>
+
+      <!-- 登录 -->
+      <form id="loginForm">
+        <h2>WELCOME BACK</h2>
+        <div class="sub">☠ 欢迎回到骨之国</div>
+        <div class="field">
+          <label>账号</label>
+          <input class="input" type="text" placeholder="手机号 / 邮箱 / 用户名" value="skull@example.com">
+        </div>
+        <div class="field">
+          <label>密码</label>
+          <input class="input" type="password" placeholder="请输入密码" value="666666">
+        </div>
+        <div class="field field-row">
+          <label class="row gap8" style="cursor:pointer;margin:0;color:#9a978f"><input type="checkbox" checked> 记住我</label>
+          <a href="#">忘记密码？</a>
+        </div>
+        <button class="btn btn-block btn-lg" type="submit">进入墓园</button>
+        <div class="field-row" style="justify-content:center;margin-top:16px;color:#6b6862">
+          还没有账号？<a href="#" id="goReg" style="color:#e63946;margin-left:5px">立即注册</a>
+        </div>
+      </form>
+
+      <!-- 注册 -->
+      <form id="regForm" class="hidden">
+        <h2>JOIN THE DEAD</h2>
+        <div class="sub">☠ 注册即领 3 张新人券 + 666 骷髅币</div>
+        <div class="field">
+          <label>手机号</label>
+          <input class="input" type="text" placeholder="请输入 11 位手机号">
+        </div>
+        <div class="field">
+          <label>短信验证码</label>
+          <div class="row gap8">
+            <input class="input" type="text" placeholder="6 位验证码">
+            <button type="button" class="btn btn-ghost" id="sendCode" style="white-space:nowrap;height:48px;letter-spacing:1px">获取验证码</button>
+          </div>
+        </div>
+        <div class="field">
+          <label>设置密码</label>
+          <input class="input" type="password" placeholder="8-20 位，含字母和数字">
+        </div>
+        <div class="field">
+          <label>邀请码（选填）</label>
+          <input class="input" type="text" placeholder="填写好友邀请码，双方各得 100 骷髅币">
+        </div>
+        <div class="field field-row">
+          <label class="row gap8" style="cursor:pointer;margin:0;color:#9a978f"><input type="checkbox" checked> 我已阅读并同意《用户协议》与《隐私政策》</label>
+        </div>
+        <button class="btn btn-block btn-lg" type="submit">注册并进入</button>
+      </form>
+
+      <div class="third-party">
+        <div class="line">其他进入方式</div>
+        <div class="icons">
+          <div title="微信">💬</div>
+          <div title="手机号">📱</div>
+          <div title="邮箱">✉️</div>
+          <div title="企业账号">🏢</div>
+        </div>
+      </div>
+
+      <div style="text-align:center;margin-top:26px">
+        <a href="index.html" style="font-size:12.5px;color:#6b6862">← 先随便逛逛，暂时不登录</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="js/data.js"></script>
+<script>
+  const lf = document.getElementById('loginForm');
+  const rf = document.getElementById('regForm');
+  const tl = document.getElementById('tabLogin');
+  const tr = document.getElementById('tabReg');
+
+  function show(which) {
+    const isLogin = which === 'login';
+    lf.classList.toggle('hidden', !isLogin);
+    rf.classList.toggle('hidden', isLogin);
+    tl.classList.toggle('on', isLogin);
+    tr.classList.toggle('on', !isLogin);
+  }
+  tl.onclick = () => show('login');
+  tr.onclick = () => show('reg');
+  document.getElementById('goReg').onclick = e => { e.preventDefault(); show('reg'); };
+  if (new URLSearchParams(location.search).get('tab') === 'reg') show('reg');
+
+  lf.addEventListener('submit', e => {
+    e.preventDefault();
+    toast('☠ 登录成功，正在打开墓园大门…');
+    setTimeout(() => location.href = 'index.html', 950);
+  });
+
+  rf.addEventListener('submit', e => {
+    e.preventDefault();
+    toast('☠ 注册成功，赠送 666 骷髅币 🎉');
+    setTimeout(() => location.href = 'index.html', 1150);
+  });
+
+  document.getElementById('sendCode').onclick = function () {
+    let n = 60;
+    this.disabled = true;
+    this.textContent = n + 's 后重发';
+    toast('验证码已发送（演示：666666）');
+    const t = setInterval(() => {
+      n--;
+      if (n <= 0) { clearInterval(t); this.disabled = false; this.textContent = '获取验证码'; }
+      else this.textContent = n + 's 后重发';
+    }, 1000);
+  };
+</script>
+</body>
+</html>
