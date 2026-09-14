@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>全部单品 - SKULL MALL 骷髅头潮品商城</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div class="topbar">
+  <div class="wrap">
+    <div class="topbar-left">
+      <span>📍 配送至：江苏 南京市</span><span class="div">|</span>
+      <a href="login.html">你好，请登录</a><a href="login.html" style="color:#e63946">免费注册</a>
+    </div>
+    <div class="topbar-left">
+      <a href="user.html">我的订单</a><span class="div">|</span>
+      <a href="index.html">返回首页</a>
+    </div>
+  </div>
+</div>
+
+<header class="header">
+  <div class="wrap header-main">
+    <a href="index.html" class="logo">
+      <div class="skull-mark" style="font-size:22px">💀</div>
+      <div class="logo-text"><b>SKULL <i>MALL</i></b><span>骷髅潮品</span></div>
+    </a>
+    <div class="search">
+      <div class="search-box">
+        <input id="searchInput" type="text" placeholder="搜索骷髅单品 / 品牌 / 系列">
+        <button class="search-btn" onclick="doSearch()">SEARCH</button>
+      </div>
+      <div class="hotwords">
+        <b>热搜</b>
+        <a href="list.html?q=骷髅">骷髅</a><a href="list.html?q=银">925银</a>
+        <a href="list.html?q=卫衣">卫衣</a><a href="list.html?q=摆件">摆件</a>
+      </div>
+    </div>
+    <div class="header-actions">
+      <a href="user.html" class="hact">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.6"/><path d="M4.5 20c0-3.8 3.4-6.4 7.5-6.4s7.5 2.6 7.5 6.4"/></svg>
+        个人中心
+      </a>
+      <a href="cart.html" class="hact">
+        <svg viewBox="0 0 24 24"><path d="M5 7h14l-1.3 12H6.3z"/><path d="M9 7a3 3 0 016 0"/></svg>
+        骨堆（车）<span class="cart-badge">0</span>
+      </a>
+    </div>
+  </div>
+</header>
+
+<nav class="nav">
+  <div class="wrap">
+    <a href="index.html">首页</a>
+    <a href="list.html?cat=tee">骷髅T恤</a>
+    <a href="list.html?cat=hoodie">连帽卫衣</a>
+    <a href="list.html?cat=ring">骷髅饰品</a>
+    <a href="list.html?cat=bag">骷髅箱包</a>
+    <a href="list.html?cat=figure">骷髅摆件</a>
+    <a href="list.html?cat=shoes">骷髅鞋靴</a>
+    <a href="list.html?cat=deco">暗黑家居</a>
+    <a href="list.html?cat=tool">骷髅工具</a>
+    <a href="list.html?cat=tattoo">纹身贴纸</a>
+    <a href="list.html?cat=vinyl">黑胶潮玩</a>
+    <a href="list.html?sort=discount">☠ 死亡折扣</a>
+  </div>
+</nav>
+
+<div class="wrap">
+  <div class="crumb"><a href="index.html">首页</a> › <span id="crumbCat">全部单品</span></div>
+
+  <div class="filter">
+    <div class="filter-row">
+      <div class="filter-label">品牌</div>
+      <div class="filter-opts" id="brandFilter"></div>
+    </div>
+    <div class="filter-row">
+      <div class="filter-label">价格</div>
+      <div class="filter-opts">
+        <a href="#" data-price="all" class="on">全部</a>
+        <a href="#" data-price="0-50">50 元以下</a>
+        <a href="#" data-price="50-200">50-200 元</a>
+        <a href="#" data-price="200-500">200-500 元</a>
+        <a href="#" data-price="500-1500">500-1500 元</a>
+        <a href="#" data-price="1500-99999">1500 元以上</a>
+      </div>
+    </div>
+    <div class="filter-row">
+      <div class="filter-label">材质</div>
+      <div class="filter-opts" id="matFilter"></div>
+    </div>
+    <div class="filter-row">
+      <div class="filter-label">服务</div>
+      <div class="filter-opts">
+        <a href="#" data-serv="all" class="on">全部</a>
+        <a href="#" data-serv="包邮">包邮</a>
+        <a href="#" data-serv="7天无理由">7天无理由</a>
+        <a href="#" data-serv="正品保证">正品保证</a>
+        <a href="#" data-serv="极速退款">极速退款</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="toolbar">
+    <div class="sorts">
+      <button data-sort="default" class="on">综合</button>
+      <button data-sort="sales">销量 ↓</button>
+      <button data-sort="new">新品</button>
+      <button data-sort="price-asc">价格 ↑</button>
+      <button data-sort="price-desc">价格 ↓</button>
+      <button data-sort="discount">折扣力度</button>
+      <button data-sort="rating">好评度</button>
+    </div>
+    <div class="result-count">共 <b id="cnt">0</b> 件骨料</div>
+  </div>
+
+  <div class="grid grid-5 mt16" id="listGrid"></div>
+  <div class="pager" id="pager"></div>
+</div>
+
+<footer class="footer">
+  <div class="wrap">
+    <div class="footer-bottom" style="border-top:none">
+      <div>© 2026 SKULL MALL 骷髅头潮品商城 · 演示站点，数据均为示例</div>
+      <div class="links"><a href="#">用户协议</a><a href="#">隐私政策</a><a href="#">关于我们</a></div>
+    </div>
+  </div>
+</footer>
+
+<script src="js/data.js"></script>
+<script>
+  const params = new URLSearchParams(location.search);
+  const state = {
+    cat: params.get('cat') || 'all',
+    q: params.get('q') || '',
+    brand: 'all',
+    price: 'all',
+    mat: 'all',
+    serv: 'all',
+    sort: params.get('sort') || 'default',
+    page: 1,
+    size: 20,
+  };
+
+  document.getElementById('searchInput').value = state.q;
+
+  const catObj = CATEGORIES.find(c => c.id === state.cat);
+  document.getElementById('crumbCat').textContent =
+    catObj ? catObj.name : (state.q ? '搜索「' + state.q + '」' : '全部单品');
+  document.title = (catObj ? catObj.name : '全部单品') + ' - SKULL MALL';
+  $$('.nav a').forEach(a => {
+    if (catObj && a.getAttribute('href').includes('cat=' + catObj.id)) a.classList.add('on');
+  });
+
+  /* 品牌筛选 */
+  document.getElementById('brandFilter').innerHTML = ['all', ...BRANDS].map(b =>
+    `<a href="#" data-brand="${b}" class="${b === 'all' ? 'on' : ''}">${b === 'all' ? '全部' : b}</a>`).join('');
+
+  /* 材质筛选 */
+  const MATS = ['纯棉', '钛钢', '925银', '树脂', '皮革', '不锈钢', '合金', 'PVC'];
+  document.getElementById('matFilter').innerHTML = ['all', ...MATS].map(m =>
+    `<a href="#" data-mat="${m}" class="${m === 'all' ? 'on' : ''}">${m === 'all' ? '全部' : m}</a>`).join('');
+
+  document.getElementById('brandFilter').addEventListener('click', e => {
+    const a = e.target.closest('a'); if (!a) return;
+    e.preventDefault();
+    state.brand = a.dataset.brand; state.page = 1;
+    $$('#brandFilter a').forEach(x => x.classList.toggle('on', x === a));
+    render();
+  });
+  document.getElementById('matFilter').addEventListener('click', e => {
+    const a = e.target.closest('a'); if (!a) return;
+    e.preventDefault();
+    state.mat = a.dataset.mat; state.page = 1;
+    $$('#matFilter a').forEach(x => x.classList.toggle('on', x === a));
+    render();
+  });
+  $$('.filter-opts').forEach(row => {
+    row.addEventListener('click', e => {
+      const a = e.target.closest('a'); if (!a) return;
+      if (a.dataset.price) {
+        e.preventDefault();
+        state.price = a.dataset.price; state.page = 1;
+        $$('[data-price]').forEach(x => x.classList.toggle('on', x === a));
+        render();
+      }
+      if (a.dataset.serv) {
+        e.preventDefault();
+        state.serv = a.dataset.serv; state.page = 1;
+        $$('[data-serv]').forEach(x => x.classList.toggle('on', x === a));
+        render();
+      }
+    });
+  });
+  $$('.sorts button').forEach(b => {
+    b.onclick = () => {
+      state.sort = b.dataset.sort; state.page = 1;
+      $$('.sorts button').forEach(x => x.classList.toggle('on', x === b));
+      render();
+    };
+  });
+  const initSort = $$('.sorts button').find(b => b.dataset.sort === state.sort);
+  if (initSort) { $$('.sorts button').forEach(x => x.classList.remove('on')); initSort.classList.add('on'); }
+
+  function filtered() {
+    let list = PRODUCTS.slice();
+    if (state.cat !== 'all') list = list.filter(p => p.cat === state.cat);
+    if (state.q) {
+      const kw = state.q.toLowerCase();
+      list = list.filter(p => (p.name + p.brand + p.sub + p.catName + p.material).toLowerCase().includes(kw));
+    }
+    if (state.brand !== 'all') list = list.filter(p => p.brand === state.brand);
+    if (state.mat !== 'all') list = list.filter(p => p.material === state.mat);
+    if (state.price !== 'all') {
+      const [lo, hi] = state.price.split('-').map(Number);
+      list = list.filter(p => p.price >= lo && p.price <= hi);
+    }
+    if (state.serv !== 'all') list = list.filter(p => p.services.includes(state.serv));
+
+    switch (state.sort) {
+      case 'sales': list.sort((a, b) => b.sales - a.sales); break;
+      case 'new': list.sort((a, b) => a.created < b.created ? 1 : -1); break;
+      case 'price-asc': list.sort((a, b) => a.price - b.price); break;
+      case 'price-desc': list.sort((a, b) => b.price - a.price); break;
+      case 'discount': list.sort((a, b) => (b.oldPrice - b.price) / b.oldPrice - (a.oldPrice - a.price) / a.oldPrice); break;
+      case 'rating': list.sort((a, b) => b.rating - a.rating); break;
+    }
+    return list;
+  }
+
+  function render() {
+    const list = filtered();
+    document.getElementById('cnt').textContent = list.length;
+    const pages = Math.max(1, Math.ceil(list.length / state.size));
+    if (state.page > pages) state.page = pages;
+    const slice = list.slice((state.page - 1) * state.size, state.page * state.size);
+
+    const grid = document.getElementById('listGrid');
+    if (!slice.length) {
+      grid.innerHTML = `<div class="empty" style="grid-column:1/-1">
+        <div class="big">💀</div>
+        <p>墓园里没有符合条件的骨料，换个条件看看？</p>
+        <a href="list.html" class="btn btn-ghost">重置筛选</a>
+      </div>`;
+    } else {
+      renderCards(grid, slice);
+    }
+
+    let html = `<button ${state.page === 1 ? 'disabled' : ''} data-p="${state.page - 1}">上一页</button>`;
+    const s = Math.max(1, state.page - 2), e = Math.min(pages, s + 4);
+    for (let i = s; i <= e; i++) html += `<button class="${i === state.page ? 'on' : ''}" data-p="${i}">${i}</button>`;
+    html += `<button ${state.page === pages ? 'disabled' : ''} data-p="${state.page + 1}">下一页</button>`;
+    html += `<span style="align-self:center;font-size:12px;color:#6b6862;margin-left:10px">共 ${pages} 页</span>`;
+    document.getElementById('pager').innerHTML = html;
+  }
+
+  document.getElementById('pager').addEventListener('click', e => {
+    const b = e.target.closest('button[data-p]'); if (!b || b.disabled) return;
+    state.page = +b.dataset.p;
+    render();
+    window.scrollTo({ top: 280, behavior: 'smooth' });
+  });
+
+  function doSearch() {
+    state.q = document.getElementById('searchInput').value.trim();
+    state.cat = 'all'; state.page = 1;
+    document.getElementById('crumbCat').textContent = state.q ? '搜索「' + state.q + '」' : '全部单品';
+    render();
+  }
+  document.getElementById('searchInput').addEventListener('keydown', e => { if (e.key === 'Enter') doSearch(); });
+
+  render();
+</script>
+</body>
+</html>
