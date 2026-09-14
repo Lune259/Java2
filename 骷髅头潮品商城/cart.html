@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>我的骨堆 - SKULL MALL 骷髅头潮品商城</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div class="topbar">
+  <div class="wrap">
+    <div class="topbar-left">
+      <span>📍 配送至：江苏 南京市</span><span class="div">|</span>
+      <a href="login.html">你好，请登录</a>
+    </div>
+    <div class="topbar-left">
+      <a href="user.html">我的订单</a><span class="div">|</span>
+      <a href="index.html">返回首页</a>
+    </div>
+  </div>
+</div>
+
+<header class="header">
+  <div class="wrap header-main">
+    <a href="index.html" class="logo">
+      <div class="skull-mark" style="font-size:22px">💀</div>
+      <div class="logo-text"><b>SKULL <i>MALL</i></b><span>骷髅潮品</span></div>
+    </a>
+    <div style="flex:1;display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+      <span style="color:#e63946;font-weight:600;letter-spacing:3px;font-family:Oswald,sans-serif;font-size:17px">BONE PILE</span>
+      <span style="font-size:12px;color:#6b6862">你的骨堆 · 库存紧张请及时结账</span>
+    </div>
+    <div class="header-actions">
+      <a href="list.html" class="hact">
+        <svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+        继续逛
+      </a>
+      <a href="cart.html" class="hact">
+        <svg viewBox="0 0 24 24"><path d="M5 7h14l-1.3 12H6.3z"/><path d="M9 7a3 3 0 016 0"/></svg>
+        骨堆（车）<span class="cart-badge">0</span>
+      </a>
+    </div>
+  </div>
+</header>
+
+<div class="wrap" id="cartWrap"></div>
+
+<footer class="footer">
+  <div class="wrap">
+    <div class="footer-bottom" style="border-top:none">
+      <div>© 2026 SKULL MALL 骷髅头潮品商城 · 演示站点，数据均为示例</div>
+      <div class="links"><a href="#">用户协议</a><a href="#">隐私政策</a></div>
+    </div>
+  </div>
+</footer>
+
+<script src="js/data.js"></script>
+<script>
+  function render() {
+    const items = Cart.all();
+    const wrap = document.getElementById('cartWrap');
+
+    if (!items.length) {
+      wrap.innerHTML = `
+        <div class="empty">
+          <div class="big">⚰️</div>
+          <p>骨堆还是空的，去墓园挑点东西吧</p>
+          <a href="index.html" class="btn">进入墓园</a>
+          <a href="list.html?sort=sales" class="btn btn-ghost" style="margin-left:12px">看骨头榜</a>
+        </div>`;
+      Cart.syncBadge();
+      return;
+    }
+
+    const rows = items.map((it, i) => {
+      const p = PRODUCTS.find(x => x.id === it.pid);
+      if (!p) return '';
+      return `
+      <div class="cart-row">
+        <div><input type="checkbox" data-chk="${i}" ${it.checked ? 'checked' : ''}></div>
+        <div class="cart-prod">
+          <div class="cart-thumb">${p.icon}</div>
+          <div style="min-width:0">
+            <a href="detail.html?id=${p.id}" class="t">${p.name}</a>
+            <div class="s">规格：${it.spec} · ${p.brand} · ${p.material}</div>
+            <div class="s" style="color:#00e5a0">✓ 现货 · 预计 9 月 15 日送达</div>
+          </div>
+        </div>
+        <div class="cart-price">¥${p.price.toLocaleString('zh-CN')}</div>
+        <div>
+          <div class="qty">
+            <button data-dec="${i}">−</button>
+            <input value="${it.qty}" readonly>
+            <button data-inc="${i}">+</button>
+          </div>
+        </div>
+        <div class="cart-sub">¥${(p.price * it.qty).toLocaleString('zh-CN')}</div>
+        <div><button class="cart-del" data-del="${i}">抛弃</button></div>
+      </div>`;
+    }).join('');
+
+    const checked = items.filter(x => x.checked);
+    const totalQty = checked.reduce((s, x) => s + x.qty, 0);
+    const totalMoney = checked.reduce((s, x) => {
+      const p = PRODUCTS.find(y => y.id === x.pid);
+      return s + (p ? p.price * x.qty : 0);
+    }, 0);
+    const saved = checked.reduce((s, x) => {
+      const p = PRODUCTS.find(y => y.id === x.pid);
+      return s + (p ? (p.oldPrice - p.price) * x.qty : 0);
+    }, 0);
+    const freight = totalMoney >= 99 ? 0 : (totalMoney > 0 ? 12 : 0);
+    const allChecked = checked.length === items.length;
+
+    wrap.innerHTML = `
+      <div class="crumb"><a href="index.html">首页</a> › <span>我的骨堆</span></div>
+
+      <div class="cart-table">
+        <div class="cart-head">
+          <div><input type="checkbox" id="chkAll" ${allChecked ? 'checked' : ''}></div>
+          <div>骨料信息</div><div>单价</div><div>数量</div><div>小计</div><div>操作</div>
+        </div>
+        ${rows}
+      </div>
+
+      <div class="row gap12 mt16" style="font-size:12.5px;color:#9a978f;flex-wrap:wrap">
+        <button class="btn btn-sm btn-dark" id="clearAll">清空骨堆</button>
+        <button class="btn btn-sm btn-dark" id="addMock">再抓 3 件进来</button>
+        <span style="margin-left:auto">已为你省下 <b style="color:#e63946;font-size:16px">¥${saved.toLocaleString('zh-CN')}</b></span>
+      </div>
+
+      <div class="cart-bar">
+        <div class="left">
+          <label class="row gap8" style="cursor:pointer"><input type="checkbox" id="chkAll2" ${allChecked ? 'checked' : ''}> 全选</label>
+          <button class="cart-del" id="delChecked">抛弃选中</button>
+        </div>
+        <div class="row gap20" style="flex-wrap:wrap">
+          <div class="total">已选 <b style="font-size:15px">${totalQty}</b> 件 · 运费 ¥${freight}</div>
+          <div class="total">合计：<b>¥${(totalMoney + freight).toLocaleString('zh-CN')}</b></div>
+          <button class="btn btn-lg" id="checkout" ${totalQty ? '' : 'disabled'}>确认献祭（结算）</button>
+        </div>
+      </div>
+
+      <section class="section">
+        <div class="sec-head">
+          <div class="sec-title"><h3>再抓<em>点</em></h3><span>常被一起带走的骨料</span></div>
+        </div>
+        <div class="grid grid-5" id="recGrid"></div>
+      </section>
+    `;
+
+    renderCards(document.getElementById('recGrid'), hotList(5));
+    Cart.syncBadge();
+    bind();
+  }
+
+  function toggleAll(v) {
+    const l = Cart.all();
+    l.forEach(x => x.checked = v);
+    Cart.save(l);
+    render();
+  }
+
+  function bind() {
+    const wrap = document.getElementById('cartWrap');
+    wrap.addEventListener('click', e => {
+      const t = e.target;
+      if (t.dataset.inc !== undefined) { Cart.setQty(+t.dataset.inc, Cart.all()[+t.dataset.inc].qty + 1); render(); }
+      else if (t.dataset.dec !== undefined) { Cart.setQty(+t.dataset.dec, Cart.all()[+t.dataset.dec].qty - 1); render(); }
+      else if (t.dataset.del !== undefined) { Cart.remove(+t.dataset.del); toast('☠ 已从骨堆抛弃'); render(); }
+      else if (t.id === 'chkAll' || t.id === 'chkAll2') { toggleAll(t.checked); }
+      else if (t.id === 'clearAll') { if (confirm('确定清空整个骨堆？')) { Cart.clear(); render(); toast('骨堆已清空'); } }
+      else if (t.id === 'delChecked') {
+        Cart.save(Cart.all().filter(x => !x.checked));
+        render(); toast('已抛弃选中骨料');
+      }
+      else if (t.id === 'addMock') {
+        hotList(3).forEach(p => Cart.add(p.id, 1));
+        render(); toast('已抓进 3 件热门骨料');
+      }
+      else if (t.id === 'checkout') {
+        toast('☠ 献祭成功 —— 演示站点，未产生真实交易');
+        setTimeout(() => {
+          if (confirm('模拟下单成功！要清空已选骨料吗？')) {
+            Cart.save(Cart.all().filter(x => !x.checked));
+            render();
+          }
+        }, 400);
+      }
+    });
+
+    wrap.addEventListener('change', e => {
+      const c = e.target.closest('[data-chk]');
+      if (c) {
+        const l = Cart.all();
+        l[+c.dataset.chk].checked = c.checked;
+        Cart.save(l);
+        render();
+      }
+    });
+  }
+
+  render();
+</script>
+</body>
+</html>
